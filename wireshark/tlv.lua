@@ -11,7 +11,7 @@ local wssdl = require 'wssdl'
 
 tlv = wssdl.packet {
     type:u8();
-    length:i32();
+    length:i16();
     data:bytes();
 }
 

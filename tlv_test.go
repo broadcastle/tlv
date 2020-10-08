@@ -1,6 +1,7 @@
 package tlv
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -22,6 +23,23 @@ func FailWithError(t *testing.T, name string, err error) {
 }
 
 var errNoMatch = fmt.Errorf("TLV records don't match")
+
+func TestFi(t *testing.T) {
+
+	raw := []byte{0x15, 0, 9, 72, 101, 108, 108, 111, 32, 71, 111, 33}
+
+	stream, err := FromBytes(raw)
+	if err != nil {
+		FailWithError(t, "TestFi", err)
+	}
+
+	proper := New(0x15, []byte("Hello Go!"))
+
+	if !Equal(stream, proper) {
+		FailWithError(t, "TestFi", errors.New("improper tlv creation"))
+	}
+
+}
 
 func TestTLVRead(t *testing.T) {
 	descr := []byte("This is a test description.")
